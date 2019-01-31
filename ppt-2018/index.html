@@ -23,10 +23,6 @@
 .qrcode {
   transition: all .2s ease;
 }
-.img-grown {
-  -webkit-transform: scale(2);
-  transform: scale(2);
-}
 </style>
 </head>
   <body>
@@ -38,7 +34,7 @@
           <p>
             <small>by 技术部 朱雨薇</small>
           </p>
-          <img class="qrcode" src="./img/qrcode.png" width="120" alt="二维码" onclick="zoomIn(this)">
+          <img class="qrcode" src="./img/qrcode.png" width="120" alt="二维码">
         </section>
         <section>
           <section>
@@ -262,16 +258,11 @@
         history: true,
         // center: true,
         transition: 'concave',
+        dependencies: [
+          { src: 'plugin/zoom-js/zoom.js', async: true },
+        ]
       });
 
-      function zoomIn(target) {
-        var cls = target.className;
-        if (cls == 'qrcode') {
-          target.className = 'qrcode img-grown';
-        } else {
-          target.className = 'qrcode';
-        }
-      }
     </script>
   </body>
 </html>
