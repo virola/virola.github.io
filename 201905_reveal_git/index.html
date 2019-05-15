@@ -325,11 +325,12 @@ $ git blame [file]
             <p>Git鼓励大量使用分支</p>
             <ul>
               <li>查看分支： <code>git branch</code> </li>
-              <li>创建分支： <code>git branch &lt;name&gt;</code></li>
-              <li>切换分支： <code>git checkout &lt;name&gt;</code></li>
-              <li>创建+切换分支： <code>git checkout -b &lt;name&gt;</code></li>
-              <li>合并某分支到当前分支： <code>git merge &lt;name&gt;</code></li>
-              <li>删除分支： <code>git branch -d &lt;name&gt;</code></li>
+              <li>创建分支： <code>git branch [name]</code></li>
+              <li>切换分支： <code>git checkout [name]</code></li>
+              <li>创建+切换分支： <code>git checkout -b [name]</code></li>
+              <li>合并某分支到当前分支： <code>git merge [name]</code></li>
+              <li>删除分支： <code>git branch -d [name]</code></li>
+              <li>删除远程分支：<br><code>git push origin --delete [name]</code><br><code>git branch -dr [remote/branch]</code></li>
             </ul>
           </section>
           <section>
@@ -521,7 +522,7 @@ $ git reset --hard [commit]
           <section>
             <h3>合并分支时解决冲突</h3>
             <p><img src="./img/confict.png"></p>
-            <p class="left">如果主分支 master 和 feature 分支都有新的提交，这种情况下，将 feature 分支合并到 master 时无法执行 Fast-forward （快进模式合并），则可能会提示有文件冲突</p>
+            <p class="left fragment">如果主分支 master 和 feature 分支都有新的提交，这种情况下，将 feature 分支合并到 master 时无法执行 Fast-forward （快进模式合并），则可能会提示有文件冲突</p>
           </section>
           <section>
             <p class="left fs-26">执行 <code>git merge branch-name</code> 时，git先尝试自动合并更改，如果两个分支修改了同一个文件，可能会提示文件冲突。</p>
@@ -534,15 +535,20 @@ Automatic merge failed; fix conflicts and then commit the result.
 
 </code></pre>
             </p>
-            <p class="left fs-26">查看提示的冲突文件，Git在文件中用 <<<<<<<，=======，>>>>>>> 标记出不同分支的内容</p>
           </section>
           <section>
+            <p class="left fs-26">查看提示的冲突文件，Git在文件中用 <<<<<<<，=======，>>>>>>> 标记出不同分支的内容</p>
+            <p>
+              <img src="./img/merge_conflict.png" alt="">
+            </p>
             <p class="left fs-26">修改冲突文件后保存，再提交一次。此时完成分支合并。</p>
-            <pre><code class="hljs">
+<pre><code class="hljs">
 $ git add version.js
 $ git commit -m "conflict fixed"
 [master cf810e4] conflict fixed
             </code></pre>
+          </section>
+          <section>
             <p class="left fs-26">最后执行 <code>git branch -d feature1</code> 删除 feature1 分支</p>
             <p class="left fs-24">Ps. 使用 <code>git log --graph</code> 命令可以看到分支合并图</p>
             <p class="fragment">
@@ -550,6 +556,57 @@ $ git commit -m "conflict fixed"
             </p>
           </section>
         </section>
+
+        <section>
+          <section>
+            <h2>引申：gitflow工作流程</h2>
+            <p><a href="https://github.com/nvie/gitflow/">github</a></p>
+            <p class="fragment">可以理解为工作中团队成员共同遵守的一种git代码管理规范</p>
+          </section>
+          <section>
+            <h3>gitflow命名约定</h3>
+            <ul>
+              <li>主分支命名： <code>master</code></li>
+              <li>主开发分支命名： <code>develop</code></li>
+              <li>标签命名： v*.RELEASE，其中 * 为版本号，RELEASE 大写，如：<code>v1.0.0.RELEASE</code></li>
+              <li>新功能开发分支命名： <code>feature-*</code></li>
+              <li>发布分支命名： <code>release-*</code></li>
+              <li>bug修复分支命名： <code>hotfix-*</code></li>
+            </ul>
+          </section>
+          <section>
+            <h3>gitflow工作流程模型</h3>
+          </section>
+          <section>
+            <p>主分支 master 和开发分支 develop</p>
+            <p><img class="bg-white" src="./img/gitflow_1.png"></p>
+            <p>初始项目，默认创建 master 分支和一个 develop 分支</p>
+          </section>
+          <section>
+            <p>功能分支 feature</p>
+            <p><img class="bg-white" src="./img/gitflow_2.png"></p>
+            <p>从develop拉取feature分支进行编码开发。多个开发人员拉取多个feature同时进行并行开发 , 互不影响。</p>
+          </section>
+          <section>
+            <p>发布分支 release</p>
+            <p><img class="bg-white" src="./img/gitflow_3.png"></p>
+            <p>从develop拉取release分支进行提测 , 提测过程中在release分支上修改BUG</p>
+          </section>
+          <section>
+            <p>维护分支 hotfix</p>
+            <p><img class="bg-white" src="./img/gitflow_4.png"></p>
+            <p>上线之后若发现线上BUG , 从master拉取hotfix分支进行BUG修改</p>
+          </section>
+
+          <section>
+            <p>
+              git-flow 主要提供命令行工具，适用于熟悉终端命令操作的开发者。<br>
+              windows中安装方式参考<a href="https://blog.csdn.net/seek_of/article/details/80320065" target="_blank">这篇文章</a>。
+            </p>
+            <p>另外有支持Git Flow的图形化工具 <a href="https://www.sourcetreeapp.com/" target="_blank">Sourcetree</a></p>
+          </section>
+        </section>
+        
         <section>
           <h2>- END -</h2>
           <p>Thanks!</p>
