@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Git Hooks</title>
+  <link rel="stylesheet" href="../assets/css/reveal.css">
+  <link rel="stylesheet" href="../assets/css/theme/moon.css">
+  <!-- <link rel="stylesheet" href="../assets/css/theme/league.css"> -->
+
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet" href="../assets/lib/css/zenburn.css">
+
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match(/print-pdf/gi) ? '../assets/css/print/pdf.css' : '../assets/css/print/paper.css';
+    document.getElementsByTagName('head')[0].appendChild(link);
+  </script>
+  <style>
+    .reveal {
+      font-size: 32px;
+    }
+  
+    .reveal .bg-white {
+      background: #fff;
+    }
+  
+    .qrcode {
+      transition: all .2s ease;
+    }
+  
+    .reveal code {
+      font-family: 'Courier New', Courier, monospace;
+    }
+  
+    .reveal .left {
+      text-align: left;
+    }
+  
+    .reveal .flex {
+      display: flex;
+    }
+  
+    .reveal .fs-26 {
+      font-size: 26px;
+    }
+  
+    .reveal .fs-24 {
+      font-size: 24px;
+    }
+    .reveal .fs-20 {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h1>Git Hooks + Lint</h1>
+        <h3>规范你的代码提交</h3>
+      </section>
+      <section>
+        <section>
+          <h2>Lint 是什么？</h2>
+          <p>
+            代码风格检查（Code Linting，简称 Lint）是保障代码规范一致性的重要手段。
+          </p>
+          <p>
+            简单来说，Lint 就是对代码做静态分析，并试图找出潜在问题的工具，实战中我们也用 Lint 来指使用工具的过程。
+          </p>
+        </section>
+        <section>
+          <h3>为什么要 Lint ?</h3>
+          <ul>
+            <li>
+              更少的 Bug。
+              <p class="fs-24">剑桥大学的研究发现，全世界每年因为软件 Bug 造成的经济损失约 3120 亿美金；</p>
+            </li>
+            <li>更高的开发效率。
+              <p class="fs-24">工程师平均会花掉 50% 的工作时间定位和解决各种 Bug，其中不乏那些显而易见的低级错误，而 Lint 很容易发现低级的、显而易见的错误；</p>
+            </li>
+            <li>更高的可读性。
+              <p class="fs-24">代码可读性的首要因子是“表面文章”，表面上看起来乱糟糟的代码通常更难读懂；</p>
+            </li>
+          </ul>
+          <p>可以毫不客气的说，如果你不做 Lint，就是在浪费自己的时间，浪费公司的资源。</p>
+        </section>
+        <section>
+          <!-- <h3>编码规范体系</h3> -->
+          <p>
+            <img src="./img/code_standard.png">
+          </p>
+          <p>
+            <a class="fs-20" target="_blank" href="https://imweb.io/topic/5d15a070f7b5692b080f25e4">腾讯IMWeb团队分享的团队编码规范体系</a>
+          </p>
+        </section>
+      </section>
+      <section>
+        <section>
+          <h2>项目实践</h2>
+        </section>
+        <section>
+          <h3>安装依赖工具</h3>
+          <ul>
+            <li><a href="https://github.com/typicode/husky" target="_blank">husky</a> 注册git钩子，阻止错误的git提交</li>
+            <li><a href="https://github.com/okonet/lint-staged" target="_blank" rel="noopener noreferrer">lint-staged</a> 针对git暂存区文件进行指定任务处理</li>
+            <li><a href="https://github.com/prettier/prettier" target="_blank" rel="noopener noreferrer">prettier</a> 自动格式化代码</li>
+            <li><a href="https://github.com/eslint/eslint" target="_blank" rel="noopener noreferrer">eslint</a> js代码检查工具</li>
+            <li><a href="https://github.com/stylelint/stylelint" target="_blank" rel="noopener noreferrer">stylelint</a> 样式代码检查工具</li>
+          </ul>
+          <p>
+            <pre><code class="hljs">
+$ npm i --save-dev husky lint-staged prettier stylelint eslint 
+                  </code></pre>
+          </p>
+        </section>
+        <section>
+          <h3>定义工作流</h3>
+          <p>只需要配置 package.json （示例）</p>
+          <pre><code class="hljs">
+{
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": ["eslint --fix", "git add"]
+  }
+}
+                    </code></pre>
+        </section>
+        <section>
+          <h3>配置eslint</h3>
+          <p>配置 <code>.eslintrc.js</code></p>
+          <pre><code class="hljs javascript">
+module.exports = {
+  // 继承npm上已经配置好的规则，例如这里用的是 vue/essential 推荐的规则
+  // 使用扩展时需要先安装对应的npm包
+  extends: [ 'plugin:vue/essential' ],
+
+  // 自定义相关规则
+  rules: {
+    // 'never', 'off' 和 0 表示关闭， 'always' 和 1 表示开启
+    'import/extensions': {
+      svg: 'always',
+      js: 'never',
+      json: 'never',
+    },
+
+    // 开发环境关闭规则，生产环境中打开规则
+    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off"
+    'space-before-function-paren': 0,
+  },
+
+  // 定义可以直接使用的全局参数
+  // 设置成 false 可以避免检测
+  globals: {
+    wx: false,
+    BMap: false,
+  },
+
+  // babel编译es6语法，需要先安装 babel-eslint 依赖
+  parserOptions: {
+    parser: "babel-eslint"
+  }
+};
+          </code></pre>
+        </section>
+        <section>
+          <h3>配置stylelint</h3>
+        </section>
+      </section>
+      
+      <section>
+        
+      </section>
+      
+    </div>
+  </div>
+  <script src="../assets/lib/js/head.min.js"></script>
+  <script src="../assets/js/reveal.js"></script>
+  
+  <script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      transition: 'concave',
+      dependencies: [
+        { src: '../assets/plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+        { src: '../assets/plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+        { src: '../assets/plugin/highlight/highlight.js', async: true },
+        { src: '../assets/plugin/zoom-js/zoom.js', async: true },
+      ]
+    });
+    Reveal.configure({ backgroundTransition: 'zoom' })
+
+  </script>
+</body>
+</html>
