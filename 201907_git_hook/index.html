@@ -118,6 +118,7 @@
 $ npm i --save-dev husky lint-staged prettier stylelint eslint 
                   </code></pre>
           </p>
+          <p class="fs-20">安装时可能会提示需要升级 node 版本，要求 node v8.12 以上。</p>
         </section>
         <section>
           <h3>定义工作流</h3>
@@ -140,22 +141,17 @@ $ npm i --save-dev husky lint-staged prettier stylelint eslint
           <p>配置 <code>.eslintrc.js</code></p>
           <pre><code class="hljs javascript">
 module.exports = {
-  // 继承npm上已经配置好的规则，例如这里用的是 vue/essential 推荐的规则
+  // 继承npm上已经配置好的规则，例如这里用的是 eslint 推荐规则和 vue/essential 推荐的规则
   // 使用扩展时需要先安装对应的npm包
-  extends: [ 'plugin:vue/essential' ],
+  // npm i --save-dev eslint-plugin-vue
+  extends: [ 'eslint:recommended', 'plugin:vue/essential'],
 
   // 自定义相关规则
+  // 0 = off, 1 = warn, 2 = error
   rules: {
-    // 'never', 'off' 和 0 表示关闭， 'always' 和 1 表示开启
-    'import/extensions': {
-      svg: 'always',
-      js: 'never',
-      json: 'never',
-    },
-
     // 开发环境关闭规则，生产环境中打开规则
-    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off"
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'space-before-function-paren': 0,
   },
 
@@ -167,19 +163,77 @@ module.exports = {
   },
 
   // babel编译es6语法，需要先安装 babel-eslint 依赖
+  // npm i --save-dev babel-eslint
   parserOptions: {
-    parser: "babel-eslint"
-  }
+    parser: 'babel-eslint',
+  },
 };
           </code></pre>
+          <p class="fs-20 left">测试规则是否生效，运行命令：
+            <code>node_modules/.bin/eslint src/main.js --fix</code>
+          </p>
+          <p class="fs-20 left">加上 <code>--fix</code> 会自动修复一些问题</p>
+        </code>
         </section>
         <section>
-          <h3>配置stylelint</h3>
+          <h3>测试git提交</h3>
+          <p class="left">修改项目文件，然后执行commit命令</p>
+          <pre><code class="hljs">git commit -am 'keep calm and commit'</code></pre>
+        </section>
+        <section>
+          <h3>代码格式化 Prettier 配置</h3>
+          <p>在 package.json 中配置</p>
+          <pre><code class="hljs">
+{
+...
+  "lint-staged": {
+    "src/**/*.{js,vue}": [
+      "prettier --tab-width 4 --single-quote true --trailing-comma es5 --write",
+      "eslint --fix",
+      "git add"
+    ]
+  }
+...
+}
+          </code></pre>
+          <p class="left fs-26">prettier命令行也支持指定配置文件：<br> <code>prettier --config ./.prettierrc.js</code></p>
+        </section>
+        <section>
+          <h3>lint-stage 文件过滤格式</h3>
+          <pre><code class="hljs">
+{
+  // .js files in the directory
+  "*.js": "eslint",
+
+  // .js files anywhere in the project
+  "**/*.js": "eslint",
+  
+  // .js file in the src directory
+  "src/*.js": "eslint",
+  
+  // .js file anywhere within and below the src directory
+  "src/**/*.js": "eslint"
+}
+          </code></pre>
+          <p></p>
+        </section>
+        <section>
+          <h3>.prettierrc.js配置文件</h3>
+          <pre><code class="hljs javascript">
+// API参数参考：
+// https://prettier.io/docs/en/options.html
+module.exports = {
+  tabWidth: 2,
+  semi: false,
+  trailingComma: 'none',
+  singleQuote: true
+}
+          </code></pre>
         </section>
       </section>
       
       <section>
-        
+        <h2>- END -</h2>
       </section>
       
     </div>
