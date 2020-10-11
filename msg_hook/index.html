@@ -36,7 +36,7 @@
         return false
       }
       // var token = $.trim($('#token').val())
-      axios.post('http://192.168.199.137:8888/api/dingtalk/send', {
+      axios.post('https://kj.bihuyihu.com/api/dingtalk/send', {
         content: content.replace(/\n/g, '\n\n'),
         token: $.trim($('#token').val())
       })
