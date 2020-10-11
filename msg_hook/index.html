@@ -42,11 +42,7 @@
       })
       .then(function (res) {
         console.log(res);
-        if (res.status == 200) {
-          var data = res.data
-          // console.log(data)
-          alert(data.msg)
-        }
+        alert(res.msg || '发送失败')
       })
       .catch(function (error) {
         console.log(error);
