@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>机器人消息推送</title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container-fluid">
+    <form id="form" onsubmit="return false">
+      <div class="form-group">
+        <label for="exampleInputEmail1">消息内容</label>
+        <textarea class="form-control" name="content" id="content" cols="30" rows="10" placeholder="支持markdown语法"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">token</label>
+        <input class="form-control" name="token" id="token" placeholder="可选"></input>
+      </div>
+      <button type="submit" class="btn btn-success">立即发送</button>
+    </form>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.1.0/axios.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.slim.js"></script>
+  <script>
+    $(function () {
+      $('#form').on('submit', function (event) {
+        event.preventDefault()
+        handleSubmit()
+      })
+    })
+    function handleSubmit() {
+      var content = $.trim($('#content').val())
+      if (!content) {
+        alert('请输入内容')
+        return false
+      }
+      // var token = $.trim($('#token').val())
+      axios.post('http://192.168.199.137:8888/api/dingtalk/send', {
+        content: content.replace(/\n/g, '\n\n'),
+        token: $.trim($('#token').val())
+      })
+      .then(function (res) {
+        console.log(res);
+        if (res.status == 200) {
+          var data = res.data
+          // console.log(data)
+          alert(data.msg)
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+        alert('未知错误')
+      });
+      return false
+    }
+  </script>
+</body>
+</html>
