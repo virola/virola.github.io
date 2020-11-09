@@ -19,7 +19,7 @@ let body = $response.body
 
 if (/<\/html>|<\/body>/.test(body)) {
   body = body.replace('</body>', `
-<script src='https://virola.github.io/jdAssist/bundle.js'>
+<script src='https://raw.githubusercontent.com/virola/virola.github.io/master/jd_qmyy/bundle.js'>
 </script></body>`)
 
 }

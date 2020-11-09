@@ -4,7 +4,7 @@
 QuantumultX => 重写 => 引用 => 添加
 
 <!-- https://raw.githubusercontent.com/elecV2/QuantumultX-Tools/master/JD/qmyy.conf -->
-https://virola.github.io/jd_qmyy/qmyy.conf
+https://raw.githubusercontent.com/virola/virola.github.io/master/jd_qmyy/qmyy.conf
 
 打开活动地址：
 
