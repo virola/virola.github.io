@@ -22,7 +22,6 @@ if (/<\/html>|<\/body>/.test(body)) {
 <script src='https://virola.github.io/jdAssist/bundle.js'>
 </script></body>`)
 
-  // console.log('添加 tamperJS：JD_qmyy.js')
 }
 
 $done({ body })

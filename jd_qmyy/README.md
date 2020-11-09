@@ -3,7 +3,8 @@
 
 QuantumultX => 重写 => 引用 => 添加
 
-https://raw.githubusercontent.com/elecV2/QuantumultX-Tools/master/JD/qmyy.conf
+<!-- https://raw.githubusercontent.com/elecV2/QuantumultX-Tools/master/JD/qmyy.conf -->
+https://virola.github.io/jd_qmyy/qmyy.conf
 
 打开活动地址：
 
@@ -22,11 +23,9 @@ jdapp;android;8.4.2;8.0.0;;network/wifi;model/Mi Note 2;osVer/26;appBuild/71043;
 bundle.js 源地址： https://krapnik.cn/tools/JDCouponAssistant/bundle.js
 
 
-
 助力链接：
+
 流年： https://bunearth.m.jd.com/babelDiy/Zeus/4SJUHwGdUQYgg94PFzjZZbGZRjDd/index.html?shareType=homeTask&inviteId=S18jDI0sSSEYbNhQ0B7KYk_Jt49K1g
 招财： https://bunearth.m.jd.com/babelDiy/Zeus/4SJUHwGdUQYgg94PFzjZZbGZRjDd/index.html?shareType=homeTask&inviteId=Vl4ISIBiRXIGKK019Wz4ZTtSKSmSrl3eryon7Oj99HniIJIparURjK0
-
-
 
 助力商圈链接：
